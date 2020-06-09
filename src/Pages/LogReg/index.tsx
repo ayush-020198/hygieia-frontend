@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, useLocation } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
 
@@ -11,7 +11,11 @@ export type LogRegProps = {
 };
 
 export const LogReg: React.FC<LogRegProps> = ({ isLoggedIn, setLoggedIn }) => {
-  if (isLoggedIn) return <Redirect to="/dashboard" />;
+  const location = useLocation<{ referrer: string }>();
+
+  const redirectTo = location.state?.referrer || "/dashboard";
+
+  if (isLoggedIn) return <Redirect to={redirectTo} />;
 
   return (
     <section className={styles.container}>

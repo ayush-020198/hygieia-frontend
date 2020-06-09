@@ -1,7 +1,7 @@
 export default (
   endpoint: RequestInfo,
   method = "GET",
-  body: RequestInit["body"] = "",
+  body: RequestInit["body"],
   headers: RequestInit["headers"]
 ) => {
   console.log("fetching", endpoint, body);

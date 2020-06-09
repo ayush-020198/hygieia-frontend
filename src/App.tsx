@@ -5,9 +5,12 @@ import cookie from "js-cookie";
 import fetcher from "Utils/fetcher";
 import styles from "./App.module.css";
 
+import ProtectedRoute from "Components/ProtectedRoute";
+
 import Home from "Pages/Home";
 import Nav from "Pages/Nav";
 import LogReg from "Pages/LogReg";
+import Dashboard from "Pages/Dashboard";
 
 const App = () => {
   const [isLoggedIn, setLoggedIn] = useState<boolean>(cookie.get("signedIn") === "true");
@@ -28,6 +31,9 @@ const App = () => {
           <Route exact path={["/login", "/register"]}>
             <LogReg isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
           </Route>
+          <ProtectedRoute exact path="/dashboard" isLoggedIn={isLoggedIn}>
+            <Dashboard setLoggedIn={setLoggedIn} />
+          </ProtectedRoute>
         </Switch>
       </div>
     </SWRConfig>
