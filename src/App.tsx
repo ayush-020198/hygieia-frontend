@@ -11,6 +11,7 @@ import Home from "Pages/Home";
 import Nav from "Pages/Nav";
 import LogReg from "Pages/LogReg";
 import Dashboard from "Pages/Dashboard";
+import Logout from "Pages/Logout";
 
 const App = () => {
   const [isLoggedIn, setLoggedIn] = useState<boolean>(cookie.get("signedIn") === "true");
@@ -23,7 +24,7 @@ const App = () => {
       }}
     >
       <div className={styles.App}>
-        <Nav />
+        <Nav isLoggedIn={isLoggedIn} />
         <Switch>
           <Route exact path="/">
             <Home />
@@ -32,8 +33,11 @@ const App = () => {
             <LogReg isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
           </Route>
           <ProtectedRoute exact path="/dashboard" isLoggedIn={isLoggedIn}>
-            <Dashboard setLoggedIn={setLoggedIn} />
+            <Dashboard />
           </ProtectedRoute>
+          <Route exact path="/logout">
+            <Logout />
+          </Route>
         </Switch>
       </div>
     </SWRConfig>

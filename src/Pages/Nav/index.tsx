@@ -2,10 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Button from "Components/Button";
 import { ReactComponent as Logo } from "Assets/logo.svg";
+import { ReactComponent as OutIcon } from "Assets/out.svg";
 
 import styles from "./nav.module.css";
 
-export const Nav: React.FC = () => {
+type NavProps = {
+  isLoggedIn: boolean;
+};
+
+export const Nav: React.FC<NavProps> = ({ isLoggedIn }) => {
   return (
     <nav className={styles.nav}>
       <Link to="/">
@@ -17,11 +22,19 @@ export const Nav: React.FC = () => {
           </div>
         </div>
       </Link>
-      <Link to="/login">
-        <Button type="button" style={{ background: "var(--colorAccent)" }}>
-          Sign In
-        </Button>
-      </Link>
+      {isLoggedIn ? (
+        <Link to="/logout">
+          <Button type="button" style={{ background: "var(--colorAccent)" }}>
+            Log Out <OutIcon className={styles.ico} />
+          </Button>
+        </Link>
+      ) : (
+        <Link to="/login">
+          <Button type="button" style={{ background: "var(--colorAccent)" }}>
+            Sign In
+          </Button>
+        </Link>
+      )}
     </nav>
   );
 };
