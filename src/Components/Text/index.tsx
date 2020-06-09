@@ -15,7 +15,7 @@ export type TextProps = InputHTMLAttributes<HTMLInputElement> & {
 
 export const Text: React.FC<TextProps> = ({
   type = "text",
-  inputSize = "regular",
+  inputSize = "full",
   className,
   title,
   haveError = false,

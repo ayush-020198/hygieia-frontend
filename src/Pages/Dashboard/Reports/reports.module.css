@@ -1,0 +1,24 @@
+.main {
+  display: flex;
+  margin-left: 4em;
+}
+
+.ul {
+  display: flex;
+  flex-direction: column;
+}
+
+.li {
+  background: var(--colorAccent);
+  color: var(--colorBG);
+  padding: 0.8em 2em;
+  border-radius: 6px;
+  text-transform: capitalize;
+  font-weight: 500;
+  min-width: 26em;
+  justify-content: space-between;
+}
+
+.ico {
+  height: 1em;
+}

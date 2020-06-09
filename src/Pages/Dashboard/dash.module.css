@@ -1,0 +1,32 @@
+.dash {
+  margin-top: 10em;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 8em;
+  box-sizing: border-box;
+}
+
+.main {
+  display: flex;
+  margin-top: 2em;
+}
+
+.details {
+  width: 30%;
+}
+
+.input {
+  margin: 1em 0;
+}
+
+.arrow {
+  height: 1em;
+  margin-left: 1em;
+}
+
+.verticalBar {
+  min-height: 100%;
+  width: 0px;
+  margin: 0 2em;
+}
