@@ -68,7 +68,7 @@ export const Reports: React.FC<ReportsProps> = ({
               key={r._id}
               onClick={() => showFile(r.cid, r.name, r.mime)}
             >
-              {r.title} <EyeIco className={styles.ico} />
+              {r.title.length > 35 ? r.title.substring(0, 35) + "..." : r.title} <EyeIco className={styles.ico} />
             </Button>
           ))}
         </div>
