@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import useSWRPost from "Hooks/useSWRPost";
 import Text from "Components/Text";
 import Button from "Components/Button";
 import { ReactComponent as ArrowIcon } from "Assets/arrow.svg";
@@ -14,10 +15,22 @@ type RegisterForm = {
 };
 
 export const Register: React.FC = () => {
-  const { handleSubmit, register, errors } = useForm<RegisterForm>();
+  const { handleSubmit, register, errors, reset } = useForm<RegisterForm>();
+
+  const [runRegister, { isValidating }] = useSWRPost<string>("/api/register", {
+    onSuccess: (data) => {
+      console.log("success", data);
+      reset();
+    },
+    onError: (err) => {
+      console.log("error", err);
+    },
+  });
 
   const onSubmit = (values: RegisterForm) => {
+    const data = JSON.stringify(values);
     console.log(values);
+    runRegister(data);
   };
 
   return (
@@ -59,7 +72,7 @@ export const Register: React.FC = () => {
         })}
         haveError={!!errors.password}
       />
-      <Button type="submit" style={{ margin: "2em 0" }}>
+      <Button type="submit" style={{ margin: "2em 0" }} disabled={isValidating}>
         Register <ArrowIcon className={styles.arrow} />
       </Button>
       <hr />
