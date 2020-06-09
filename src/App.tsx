@@ -15,6 +15,7 @@ import Logout from "Pages/Logout";
 
 const App = () => {
   const [isLoggedIn, setLoggedIn] = useState<boolean>(cookie.get("signedIn") === "true");
+  const [passphrase, setPassphrase] = useState<string>();
 
   return (
     <SWRConfig
@@ -30,10 +31,14 @@ const App = () => {
             <Home />
           </Route>
           <Route exact path={["/login", "/register"]}>
-            <LogReg isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
+            <LogReg
+              isLoggedIn={isLoggedIn}
+              setLoggedIn={setLoggedIn}
+              setPassphrase={setPassphrase}
+            />
           </Route>
           <ProtectedRoute exact path="/dashboard" isLoggedIn={isLoggedIn}>
-            <Dashboard />
+            <Dashboard passphrase={passphrase} setPassphrase={setPassphrase} />
           </ProtectedRoute>
           <Route exact path="/logout">
             <Logout />

@@ -16,27 +16,26 @@ type LoginForm = {
 
 export type LoginProps = {
   setLoggedIn: Dispatch<SetStateAction<boolean>>;
+  setPassphrase: Dispatch<SetStateAction<string | undefined>>;
 };
 
-export const Login: React.FC<LoginProps> = ({ setLoggedIn }) => {
+export const Login: React.FC<LoginProps> = ({ setLoggedIn, setPassphrase }) => {
   const { handleSubmit, register, errors, reset } = useForm<LoginForm>();
 
-  const [runLogin, { isValidating }] = useSWRPost<string>(
-    "/api/login",
-    {
-      onSuccess: (data) => {
-        console.log("success", data);
-        reset();
-        setLoggedIn(true);
-      },
-      onError: (err) => {
-        console.log("error", err);
-      },
-    }
-  );
+  const [runLogin, { isValidating }] = useSWRPost<string>("/api/login", {
+    onSuccess: (data) => {
+      console.log("success", data);
+      reset();
+      setLoggedIn(true);
+    },
+    onError: (err) => {
+      console.log("error", err);
+    },
+  });
 
   const onSubmit = (values: LoginForm) => {
     const data = JSON.stringify(values);
+    setPassphrase(values.password);
     runLogin(data);
   };
 

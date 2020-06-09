@@ -12,10 +12,18 @@ type Res = {
     _id: string;
     name: string;
     email: string;
+    keys: {
+      privKey: string;
+    };
   };
 };
 
-export const Dashboard: React.FC = () => {
+export type DashboardProps = {
+  passphrase?: string;
+  setPassphrase: React.Dispatch<React.SetStateAction<string | undefined>>;
+};
+
+export const Dashboard: React.FC<DashboardProps> = ({ passphrase, setPassphrase }) => {
   const { data, error } = useSWR<Res, any>("/api/user");
 
   if (error || data?.error)
@@ -33,7 +41,7 @@ export const Dashboard: React.FC = () => {
     );
 
   const {
-    user: { name },
+    user: { name, keys },
   } = data;
 
   return (
@@ -75,7 +83,7 @@ export const Dashboard: React.FC = () => {
           </Button>
         </form>
         <hr className={styles.verticalBar} />
-        <Reports />
+        <Reports passphrase={passphrase} setPassphrase={setPassphrase} privKey={keys.privKey} />
       </section>
     </div>
   );
