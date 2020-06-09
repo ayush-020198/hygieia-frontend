@@ -1,0 +1,23 @@
+.input {
+  composes: input from '../common.module.css';
+}
+
+.small {
+  composes: small from '../common.module.css';
+}
+
+.regular {
+  composes: regular from '../common.module.css';
+}
+
+.large {
+  composes: large from '../common.module.css';
+}
+
+.wide {
+  composes: wide from '../common.module.css';
+}
+
+.error {
+  composes: error from '../common.module.css';
+}

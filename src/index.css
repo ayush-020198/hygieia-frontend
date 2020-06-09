@@ -11,9 +11,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 :root {
   --colorBrand: #D14754;
   --colorAccent: #24B3C9;
   --colorBG: #ffffff;
   --colorFG: #111111;
+  --colorShadow: #e9f3fa;
 }

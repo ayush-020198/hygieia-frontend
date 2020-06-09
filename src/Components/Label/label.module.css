@@ -1,0 +1,31 @@
+.label {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5em 0;
+}
+
+.title {
+  font-size: 0.9em;
+  font-weight: 500;
+  margin-bottom: 0.4em;
+  margin-left: 0.5em;
+}
+
+.small {
+  width: 150px;
+}
+
+.regular {
+  width: 300px;
+  font-size: 1em;
+}
+
+.large {
+  width: 380px;
+  font-size: 1.2em;
+}
+
+.full {
+  composes: regular;
+  width: 100%;
+}

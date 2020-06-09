@@ -1,0 +1,27 @@
+.container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 4em 12em;
+  background: url(../../Assets/illust.svg);
+  background-position: right bottom;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.form {
+  background: var(--colorBG);
+  padding: 2em;
+}
+
+.arrow {
+  height: 1em;
+  margin-left: 1em;
+}
+
+.sub > a {
+  text-decoration: underline;
+  color: var(--colorAccent);
+}

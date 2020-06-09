@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Button from "Components/Button";
 import { ReactComponent as HeroImg } from "Assets/health.svg";
 import { ReactComponent as ArrowIcon } from "Assets/arrow.svg";
@@ -18,9 +19,11 @@ export const Home: React.FC = () => {
           Empowering your existing health records with the power of blockchain for faster, easier
           and safe access.
         </p>
-        <Button style={{ background: "var(--colorBrand)" }} type="button">
-          Try Now <ArrowIcon className={styles.arrow} />
-        </Button>
+        <Link to="/register">
+          <Button style={{ background: "var(--colorBrand)" }} type="button">
+            Try Now <ArrowIcon className={styles.arrow} />
+          </Button>
+        </Link>
       </div>
       <div className={styles.heroDiv}>
         <HeroImg className={styles.hero} />
