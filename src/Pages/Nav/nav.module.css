@@ -1,0 +1,36 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 2em 6em;
+  position: absolute;
+  top: 2em;
+  left: 0;
+}
+
+.brandDiv {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 3em;
+  margin-right: 1em;
+}
+
+.nameDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.heading {
+  font-size: 1.4em;
+  margin: 0;
+}
+
+.para {
+  margin: 0;
+}
