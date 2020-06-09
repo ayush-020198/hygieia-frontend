@@ -4,6 +4,7 @@ import styles from "./reports.module.css";
 import Button from "Components/Button";
 import { ReactComponent as EyeIco } from "Assets/eye.svg";
 import { getFile, decryptFile, downloadBlob } from "Utils/ipfs";
+import Upload from "./upload";
 
 type Res = {
   error: string;
@@ -72,6 +73,8 @@ export const Reports: React.FC<ReportsProps> = ({
           ))}
         </div>
       </div>
+
+      <Upload />
     </div>
   );
 };
