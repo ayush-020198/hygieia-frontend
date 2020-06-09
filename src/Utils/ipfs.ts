@@ -25,12 +25,13 @@ export const decryptFile = async (file: Buffer, privKey: string, passphrase: str
   const { data: decrypted } = await openpgp.decrypt({
     message: await openpgp.message.readArmored(file),
     privateKeys: [privKeyOpen],
+    format: 'binary',
   });
 
-  return decrypted;
+  return Buffer.from(decrypted);
 }
 
-export const downloadBlob = (data: string, filename: string, mime: string) => {
+export const downloadBlob = (data: Buffer, filename: string, mime: string) => {
   const blob = new Blob([data], { type: mime});
 
   const url = URL.createObjectURL(blob);
