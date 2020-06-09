@@ -1,6 +1,7 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import useSWRPost from "Hooks/useSWRPost";
 
 import Text from "Components/Text";
 import Button from "Components/Button";
@@ -13,11 +14,30 @@ type LoginForm = {
   password: string;
 };
 
-export const Login: React.FC = () => {
-  const { handleSubmit, register, errors } = useForm<LoginForm>();
+export type LoginProps = {
+  setLoggedIn: Dispatch<SetStateAction<boolean>>;
+};
+
+export const Login: React.FC<LoginProps> = ({ setLoggedIn }) => {
+  const { handleSubmit, register, errors, reset } = useForm<LoginForm>();
+
+  const [runLogin, { isValidating }] = useSWRPost<string>(
+    "/api/login",
+    {
+      onSuccess: (data) => {
+        console.log("success", data);
+        reset();
+        setLoggedIn(true);
+      },
+      onError: (err) => {
+        console.log("error", err);
+      },
+    }
+  );
 
   const onSubmit = (values: LoginForm) => {
-    console.log(values);
+    const data = JSON.stringify(values);
+    runLogin(data);
   };
 
   return (
@@ -49,7 +69,7 @@ export const Login: React.FC = () => {
         })}
         haveError={!!errors.password}
       />
-      <Button type="submit" style={{ margin: "2em 0" }}>
+      <Button type="submit" style={{ margin: "2em 0" }} disabled={isValidating}>
         Log In <ArrowIcon className={styles.arrow} />
       </Button>
       <hr />
