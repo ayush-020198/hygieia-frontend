@@ -1,0 +1,31 @@
+.button {
+  background: var(--colorFG);
+  color: var(--colorBG);
+  font-family: inherit;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7em 2em;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.small {
+  font-size: 0.7em;
+}
+
+.regular {
+  font-size: 1em;
+}
+
+.large {
+  font-size: 2em;
+}
+
+.wide {
+  --pad: 4em;
+  padding-left: var(--pad);
+  padding-right: var(--pad);
+}

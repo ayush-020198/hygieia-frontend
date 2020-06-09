@@ -1,0 +1,5 @@
+.App {
+  composes: vertical from './Common.module.css';
+  width: 100%;
+  min-height: 100vh;
+}
