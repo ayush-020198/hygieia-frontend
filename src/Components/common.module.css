@@ -4,31 +4,14 @@
   border-radius: 6px;
   padding: 1em 2em;
   border: solid 2px transparent;
+  width: 100%;
 }
 
 .input:focus {
   border-color: var(--colorAccent);
 }
 
-.small {
-  width: 120px;
-}
-
-.regular {
-  width: 250px;
-  font-size: 1em;
-}
-
-.large {
-  width: 350px;
-  font-size: 1.2em;
-}
-
-.wide {
-  width: 100%;
-}
-
-.error {
+.input.error:focus, .error {
   border-color: #e2474b;
 }
 

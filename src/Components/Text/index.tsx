@@ -9,6 +9,7 @@ export type TextProps = InputHTMLAttributes<HTMLInputElement> & {
   inputSize?: "small" | "regular" | "large" | "full";
   title: string;
   haveError?: boolean;
+  inpRef?: (ref: HTMLInputElement) => void | null;
   labelProps?: LabelProps;
 };
 
@@ -18,6 +19,7 @@ export const Text: React.FC<TextProps> = ({
   className,
   title,
   haveError = false,
+  inpRef,
   labelProps,
   ...rest
 }) => {
@@ -26,6 +28,7 @@ export const Text: React.FC<TextProps> = ({
       <input
         {...rest}
         type={type}
+        ref={inpRef}
         className={classNames(styles.input, className, { [styles.error]: haveError })}
       />
     </Label>
