@@ -41,7 +41,7 @@ const App = () => {
             <Dashboard passphrase={passphrase} setPassphrase={setPassphrase} />
           </ProtectedRoute>
           <Route exact path="/logout">
-            <Logout />
+            <Logout setLoggedIn={setLoggedIn} />
           </Route>
         </Switch>
       </div>

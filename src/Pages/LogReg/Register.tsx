@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useSWRPost from "Hooks/useSWRPost";
 import Text from "Components/Text";
@@ -15,12 +15,14 @@ type RegisterForm = {
 };
 
 export const Register: React.FC = () => {
+  const history = useHistory()
   const { handleSubmit, register, errors, reset } = useForm<RegisterForm>();
 
-  const [runRegister, { isValidating }] = useSWRPost<string>("/api/register", {
+  const [runRegister, { isValidating }] = useSWRPost<string>("/api/signup", {
     onSuccess: (data) => {
       console.log("success", data);
       reset();
+      history.push('/login');
     },
     onError: (err) => {
       console.log("error", err);
