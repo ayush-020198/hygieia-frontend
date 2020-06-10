@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import { SWRConfig } from "swr";
 import cookie from "js-cookie";
+import { key } from "openpgp";
 import fetcher from "Utils/fetcher";
 import styles from "./App.module.css";
 
@@ -16,6 +17,7 @@ import Logout from "Pages/Logout";
 const App = () => {
   const [isLoggedIn, setLoggedIn] = useState<boolean>(cookie.get("signedIn") === "true");
   const [passphrase, setPassphrase] = useState<string>();
+  const [unlockedKey, setUnlockedKey] = useState<key.Key>();
 
   return (
     <SWRConfig
@@ -38,7 +40,7 @@ const App = () => {
             />
           </Route>
           <ProtectedRoute exact path="/dashboard" isLoggedIn={isLoggedIn}>
-            <Dashboard passphrase={passphrase} setPassphrase={setPassphrase} />
+            <Dashboard passphrase={passphrase} setPassphrase={setPassphrase} unlockedKey={unlockedKey} setUnlockedKey={setUnlockedKey} />
           </ProtectedRoute>
           <Route exact path="/logout">
             <Logout setLoggedIn={setLoggedIn} />

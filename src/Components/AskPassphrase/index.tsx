@@ -4,21 +4,40 @@ import Button from "Components/Button";
 import { useForm } from "react-hook-form";
 
 import toast from "Utils/toast";
+import { unlockKey } from "Utils/ipfs";
 
 import styles from "./ask.module.css";
+import { key } from "openpgp";
 
 type PassForm = {
   password: string;
 };
 
-export type AskPassphraseProps = { setPassphrase: Dispatch<SetStateAction<string | undefined>> };
+export type AskPassphraseProps = {
+  setPassphrase: Dispatch<SetStateAction<string | undefined>>;
+  privKey: string;
+  // unlockedKey: string;
+  setUnlockedKey: React.Dispatch<React.SetStateAction<key.Key | undefined>>;
+};
 
-export const AskPassphrase: React.FC<AskPassphraseProps> = ({ setPassphrase }) => {
+export const AskPassphrase: React.FC<AskPassphraseProps> = ({
+  setPassphrase,
+  privKey,
+  setUnlockedKey,
+}) => {
   const { handleSubmit, register, reset, errors } = useForm<PassForm>();
 
   const onSubmit = (values: PassForm) => {
-    setPassphrase(values.password);
-    reset();
+    unlockKey(privKey, values.password)
+      .then((k) => {
+        setUnlockedKey(k);
+        setPassphrase(values.password);
+        reset();
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error("Unlocking failed. Please try again.");
+      });
   };
 
   useEffect(() => {

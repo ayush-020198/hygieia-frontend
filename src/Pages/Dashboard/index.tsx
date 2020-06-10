@@ -1,5 +1,6 @@
 import React from "react";
 import useSWR from "swr";
+import { key } from "openpgp";
 import styles from "./dash.module.css";
 import Reports from "./Reports";
 import Text from "Components/Text";
@@ -22,9 +23,16 @@ type Res = {
 export type DashboardProps = {
   passphrase?: string;
   setPassphrase: React.Dispatch<React.SetStateAction<string | undefined>>;
+  unlockedKey?: key.Key;
+  setUnlockedKey: React.Dispatch<React.SetStateAction<key.Key | undefined>>;
 };
 
-export const Dashboard: React.FC<DashboardProps> = ({ passphrase, setPassphrase }) => {
+export const Dashboard: React.FC<DashboardProps> = ({
+  passphrase,
+  setPassphrase,
+  unlockedKey,
+  setUnlockedKey,
+}) => {
   const { data, error } = useSWR<Res, any>("/api/user");
 
   if (error || data?.error)
@@ -34,10 +42,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ passphrase, setPassphrase 
       </div>
     );
 
-  if (!data)
-    return (
-      <Loader/>
-    );
+  if (!data) return <Loader />;
 
   const {
     user: { name, keys },
@@ -82,7 +87,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ passphrase, setPassphrase 
           </Button>
         </form>
         <hr className={styles.verticalBar} />
-        <Reports passphrase={passphrase} setPassphrase={setPassphrase} privKey={keys.privKey} />
+        <Reports
+          passphrase={passphrase}
+          setPassphrase={setPassphrase}
+          privKey={keys.privKey}
+          unlockedKey={unlockedKey}
+          setUnlockedKey={setUnlockedKey}
+        />
       </section>
     </div>
   );
