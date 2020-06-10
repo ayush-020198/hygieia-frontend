@@ -8,16 +8,18 @@ import { ReactComponent as EyeIco } from "Assets/eye.svg";
 import { getFile, decryptFile, downloadBlob } from "Utils/ipfs";
 import Upload from "./upload";
 import Loader from "Components/Loader";
+import AskPassphrase from "Components/AskPassphrase";
 
+type Rep = {
+  _id: string;
+  cid: string;
+  title: string;
+  name: string;
+  mime: string;
+};
 type Res = {
   error: string;
-  reports: {
-    _id: string;
-    cid: string;
-    title: string;
-    name: string;
-    mime: string;
-  }[];
+  reports: Rep[];
 };
 
 export type ReportsProps = {
@@ -26,23 +28,15 @@ export type ReportsProps = {
   setPassphrase: React.Dispatch<React.SetStateAction<string | undefined>>;
 };
 
-export const Reports: React.FC<ReportsProps> = ({
-  passphrase = "123456",
-  setPassphrase,
-  privKey,
-}) => {
-  const { data, isValidating, error } = useSWR<Res, any>("/api/reports");
+type ReportProps = {
+  rep: Rep;
+  privKey: string;
+  passphrase: string;
+};
+
+const Report: React.FC<ReportProps> = ({ rep, privKey, passphrase }) => {
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isDecrypting, setIsDecrypting] = useState<boolean>(false);
-
-  if ((!data && !error) || isValidating) return <Loader relative />;
-
-  if (error || data?.error)
-    return (
-      <div className={styles.dash}>
-        <h1>Some error occurred.</h1>
-      </div>
-    );
 
   const showFile = (cid: string, name: string, mime: string) => {
     if (isFetching) {
@@ -68,22 +62,46 @@ export const Reports: React.FC<ReportsProps> = ({
       });
   };
 
+  const { name, title, cid, mime } = rep;
+
+  return (
+    <Button
+      type="button"
+      className={styles.li}
+      onClick={() => showFile(cid, name, mime)}
+      disabled={isFetching || isDecrypting}
+    >
+      {title.length > 35 ? title.substring(0, 35) + "..." : title}
+      <EyeIco className={styles.ico} />
+    </Button>
+  );
+};
+
+export const Reports: React.FC<ReportsProps> = ({
+  passphrase,
+  setPassphrase,
+  privKey,
+}) => {
+  const { data, error } = useSWR<Res, any>("/api/reports");
+
+  if (error || data?.error)
+    return (
+      <div className={styles.dash}>
+        <h1>Some error occurred.</h1>
+      </div>
+    );
+
+  if (!data) return <Loader relative />;
+
+  if (!passphrase) return <AskPassphrase setPassphrase={setPassphrase} />;
+
   return (
     <div className={styles.main}>
       <div>
         <h2>Health Documents</h2>
         <div className={styles.ul}>
           {data?.reports.map((r) => (
-            <Button
-              type="button"
-              className={styles.li}
-              key={r._id}
-              onClick={() => showFile(r.cid, r.name, r.mime)}
-              disabled={isFetching || isDecrypting}
-            >
-              {r.title.length > 35 ? r.title.substring(0, 35) + "..." : r.title}{" "}
-              <EyeIco className={styles.ico} />
-            </Button>
+            <Report key={r._id} rep={r} privKey={privKey} passphrase={passphrase} />
           ))}
         </div>
       </div>
