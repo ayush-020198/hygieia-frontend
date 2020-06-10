@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import useSWR from "swr";
+import toast from "Utils/toast";
 import styles from "./reports.module.css";
 import Button from "Components/Button";
 import { ReactComponent as EyeIco } from "Assets/eye.svg";
@@ -29,6 +30,8 @@ export const Reports: React.FC<ReportsProps> = ({
   privKey,
 }) => {
   const { data, isValidating, error } = useSWR<Res, any>("/api/reports");
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [isDecrypting, setIsDecrypting] = useState<boolean>(false);
 
   if ((!data && !error) || isValidating)
     return (
@@ -45,14 +48,26 @@ export const Reports: React.FC<ReportsProps> = ({
     );
 
   const showFile = (cid: string, name: string, mime: string) => {
+    if (isFetching) {
+      toast.info("Please wait while the previous download finishes");
+      return;
+    }
+    setIsFetching(true);
+    toast.loading("Fetching your Report");
     getFile(cid)
       .then((buf) => {
         console.log(buf.toString());
+        setIsFetching(false);
+        setIsDecrypting(true);
+        toast.info("Decrypting your file");
         return decryptFile(buf, privKey, passphrase);
       })
       .then((val) => downloadBlob(val, name, mime))
       .catch((err) => {
-        console.log(err);
+        setIsDecrypting(false);
+        setIsFetching(false);
+        console.error(err);
+        toast.error(err.toString());
       });
   };
 
@@ -67,8 +82,10 @@ export const Reports: React.FC<ReportsProps> = ({
               className={styles.li}
               key={r._id}
               onClick={() => showFile(r.cid, r.name, r.mime)}
+              disabled={isFetching || isDecrypting}
             >
-              {r.title.length > 35 ? r.title.substring(0, 35) + "..." : r.title} <EyeIco className={styles.ico} />
+              {r.title.length > 35 ? r.title.substring(0, 35) + "..." : r.title}{" "}
+              <EyeIco className={styles.ico} />
             </Button>
           ))}
         </div>

@@ -7,10 +7,12 @@ type LogoutProps = {
 };
 
 export const Logout: React.FC<LogoutProps> = ({ setLoggedIn }) => {
-  const { data, isValidating, error } = useSWR("/api/logout");
-  if ((!data && !error) || isValidating) return <h1>Logging out...</h1>;
-
-  setLoggedIn(false);
+  const { data } = useSWR("/api/logout", {
+    onSuccess: () => {
+      setLoggedIn(false);
+    },
+  });
+  if (!data) return <h1>Logging out...</h1>;
 
   return <Redirect to="/" />;
 };

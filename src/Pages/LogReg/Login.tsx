@@ -1,7 +1,8 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useSWRPost from "Hooks/useSWRPost";
+import toast from "Utils/toast";
 
 import Text from "Components/Text";
 import Button from "Components/Button";
@@ -24,14 +25,26 @@ export const Login: React.FC<LoginProps> = ({ setLoggedIn, setPassphrase }) => {
 
   const [runLogin, { isValidating }] = useSWRPost<string>("/api/login", {
     onSuccess: (data) => {
-      console.log("success", data);
+      if (data.error) {
+        toast.error(data.error);
+        return;
+      }
+
+      toast.success(data.message);
       reset();
       setLoggedIn(true);
     },
     onError: (err) => {
-      console.log("error", err);
+      toast.error("Some error occurred");
+      console.error(err);
     },
   });
+
+  useEffect(() => {
+    (Object.keys(errors) as Array<keyof LoginForm>).forEach((key) => {
+      if (errors[key]?.message) toast.error(errors[key]?.message);
+    });
+  }, [errors]);
 
   const onSubmit = (values: LoginForm) => {
     const data = JSON.stringify(values);
@@ -64,7 +77,10 @@ export const Login: React.FC<LoginProps> = ({ setLoggedIn, setPassphrase }) => {
         inputSize="large"
         inpRef={register({
           required: "Password is required",
-          minLength: 6,
+          minLength: {
+            value: 6,
+            message: "Password needs to be of minimum 6 characters",
+          },
         })}
         haveError={!!errors.password}
       />

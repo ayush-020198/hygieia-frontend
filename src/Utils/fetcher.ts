@@ -5,12 +5,16 @@ export default (
   headers: RequestInit["headers"]
 ) => {
   console.log("fetching", endpoint, body);
+
   let options: RequestInit = {
     method,
-    headers: {
-      "Content-Type": "application/json",
-      ...headers,
-    },
+    headers:
+      body instanceof FormData
+        ? headers
+        : {
+            "Content-Type": "application/json",
+            ...headers,
+          },
     body: body,
   };
 

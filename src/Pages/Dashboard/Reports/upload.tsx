@@ -1,8 +1,10 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { useForm } from "react-hook-form";
-import { mutate } from 'swr';
+import { mutate } from "swr";
 import Label from "Components/Label";
+import useSWRPost from "Hooks/useSWRPost";
+import toast from "Utils/toast";
 
 import { ReactComponent as DustbinSvg } from "Assets/dustbin.svg";
 import { ReactComponent as UploadSvg } from "Assets/upload.svg";
@@ -30,21 +32,46 @@ export const Upload: React.FC = () => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, multiple: false });
 
+  const [runUpload, { isValidating }] = useSWRPost<FormData>("/api/upload", {
+    onSuccess: (data) => {
+      if (data.error) {
+        toast.error(data.error);
+        return;
+      }
+
+      toast.success(data.message);
+      reset();
+      mutate("/api/reports");
+    },
+    onError: (err) => {
+      toast.error("Some error occurred");
+      console.error(err);
+    },
+  });
+
+  useEffect(() => {
+    (Object.keys(errors) as Array<keyof UpForm>).forEach((key) => {
+      if (errors[key]?.message) toast.error(errors[key]?.message);
+    });
+  }, [errors]);
+
   const onSubmit = (values: UpForm) => {
     const fd = new FormData();
     fd.append("title", values.title);
     fd.append("report", values.report[0]);
 
-    fetch("/api/upload", {
-      method: "POST",
-      body: fd,
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
-        mutate('/api/reports')
-        reset();
-      });
+    runUpload(fd);
+
+    // fetch("/api/upload", {
+    //   method: "POST",
+    //   body: fd,
+    // })
+    //   .then((res) => res.json())
+    //   .then((res) => {
+    //     console.log(res);
+    //     mutate('/api/reports')
+    //     reset();
+    //   });
   };
 
   return (
@@ -97,7 +124,7 @@ export const Upload: React.FC = () => {
           </div>
         )}
       </Label>
-      <Button type="submit" style={{ margin: "2em 0" }}>
+      <Button type="submit" style={{ margin: "2em 0" }} disabled={isValidating}>
         Submit
       </Button>
     </form>

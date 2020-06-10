@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useSWRPost from "Hooks/useSWRPost";
+import toast from "Utils/toast";
 import Text from "Components/Text";
 import Button from "Components/Button";
 import { ReactComponent as ArrowIcon } from "Assets/arrow.svg";
@@ -15,19 +16,31 @@ type RegisterForm = {
 };
 
 export const Register: React.FC = () => {
-  const history = useHistory()
+  const history = useHistory();
   const { handleSubmit, register, errors, reset } = useForm<RegisterForm>();
 
   const [runRegister, { isValidating }] = useSWRPost<string>("/api/signup", {
     onSuccess: (data) => {
-      console.log("success", data);
+      if (data.error) {
+        toast.error(data.error);
+        return;
+      }
+
+      toast.success(data.message);
       reset();
-      history.push('/login');
+      history.push("/login");
     },
     onError: (err) => {
-      console.log("error", err);
+      toast.error("Some error occurred");
+      console.error(err);
     },
   });
+
+  useEffect(() => {
+    (Object.keys(errors) as Array<keyof RegisterForm>).forEach((key) => {
+      if (errors[key]?.message) toast.error(errors[key]?.message);
+    });
+  }, [errors]);
 
   const onSubmit = (values: RegisterForm) => {
     const data = JSON.stringify(values);
