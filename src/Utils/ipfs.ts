@@ -6,7 +6,7 @@ export const getFile = async (cid: string): Promise<Buffer> => {
   const node = await IPFS.create();
 
   const stream = node.cat(cid, {
-    timeout: 10000,
+    timeout: 120000,
   });
   const chunks = [];
   for await (const chunk of stream) {
