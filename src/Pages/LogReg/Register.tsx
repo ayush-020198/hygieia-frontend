@@ -6,6 +6,7 @@ import toast from "Utils/toast";
 import Text from "Components/Text";
 import Button from "Components/Button";
 import { ReactComponent as ArrowIcon } from "Assets/arrow.svg";
+import { ReactComponent as Spinner } from "Assets/three-dots.svg";
 
 import styles from "./logReg.module.css";
 
@@ -88,7 +89,13 @@ export const Register: React.FC = () => {
         haveError={!!errors.password}
       />
       <Button type="submit" style={{ margin: "2em 0" }} disabled={isValidating}>
-        Register <ArrowIcon className={styles.arrow} />
+        {isValidating ? (
+          <Spinner style={{ height: "1em" }} />
+        ) : (
+          <>
+            Register <ArrowIcon className={styles.arrow} />
+          </>
+        )}
       </Button>
       <hr />
       <p className={styles.sub}>

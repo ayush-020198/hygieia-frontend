@@ -4,8 +4,10 @@ import toast from "Utils/toast";
 import styles from "./reports.module.css";
 import Button from "Components/Button";
 import { ReactComponent as EyeIco } from "Assets/eye.svg";
+// import { ReactComponent as Spinner } from "Assets/three-dots.svg";
 import { getFile, decryptFile, downloadBlob } from "Utils/ipfs";
 import Upload from "./upload";
+import Loader from "Components/Loader";
 
 type Res = {
   error: string;
@@ -33,12 +35,7 @@ export const Reports: React.FC<ReportsProps> = ({
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isDecrypting, setIsDecrypting] = useState<boolean>(false);
 
-  if ((!data && !error) || isValidating)
-    return (
-      <div className={styles.dash}>
-        <h1>Loading..</h1>
-      </div>
-    );
+  if ((!data && !error) || isValidating) return <Loader relative />;
 
   if (error || data?.error)
     return (

@@ -8,6 +8,7 @@ import toast from "Utils/toast";
 
 import { ReactComponent as DustbinSvg } from "Assets/dustbin.svg";
 import { ReactComponent as UploadSvg } from "Assets/upload.svg";
+import { ReactComponent as Spinner } from "Assets/three-dots.svg";
 
 import styles from "./reports.module.css";
 import Button from "Components/Button";
@@ -125,7 +126,7 @@ export const Upload: React.FC = () => {
         )}
       </Label>
       <Button type="submit" style={{ margin: "2em 0" }} disabled={isValidating}>
-        Submit
+        {isValidating ? <Spinner style={{ height: "1em" }} /> : <>Submit</>}
       </Button>
     </form>
   );

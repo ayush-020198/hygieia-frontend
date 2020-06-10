@@ -4,6 +4,7 @@ import styles from "./dash.module.css";
 import Reports from "./Reports";
 import Text from "Components/Text";
 import Button from "Components/Button";
+import Loader from "Components/Loader";
 import { ReactComponent as ArrowIcon } from "Assets/arrow.svg";
 
 type Res = {
@@ -35,9 +36,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ passphrase, setPassphrase 
 
   if (!data)
     return (
-      <div className={styles.dash}>
-        <h1>Loading..</h1>
-      </div>
+      <Loader/>
     );
 
   const {
