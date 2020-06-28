@@ -10,5 +10,10 @@ This front-end side uses several tools to make the development easier.
 Some of the tools used are react-dropzone, react-hook-form, ipfs, and many more. 
 You can get a better idea of their integration in your webapps from here.
 
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
 ## Server-side
 [SERVER](https://github.com/ayush-020198/hygieia-backend)
